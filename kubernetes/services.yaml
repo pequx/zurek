@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: backend
+  name: postgres
+spec:
+  clusterIP: None
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: backend
+  name: redis
+spec:
+  selector:
+    app: redis
+  ports:
+    - port: 6379
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: backend
+  name: minio
+spec:
+  type: LoadBalancer
+  selector:
+    app: minio
+  ports:
+    - port: 9000
+      targetPort: 9000
+      protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: backend
+  name: backend
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    app: backend

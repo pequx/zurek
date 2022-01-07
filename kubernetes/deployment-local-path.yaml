@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: local-path-provisioner
+  namespace: local-path-storage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: local-path-provisioner
+  template:
+    metadata:
+      labels:
+        app: local-path-provisioner
+    spec:
+      serviceAccountName: local-path-provisioner-service-account
+      containers:
+      - name: local-path-provisioner
+        image: rancher/local-path-provisioner:v0.0.12
+        imagePullPolicy: IfNotPresent
+        command:
+          - local-path-provisioner
+          - --debug
+          - start
+          - --config
+          - /etc/config/config.json
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/config/
+        env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        resources:
+          limits:
+            cpu: 125m
+            memory: 2Gi
+          requests:
+            cpu: 62m
+            memory: 1Gi
+        stdin: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: local-path-config

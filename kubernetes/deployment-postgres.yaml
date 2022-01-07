@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: zurek
+  name: postgres
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:12-alpine
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: backend
+                  key: POSTGRES_DB
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nestjs-kubernetes-secret
+                  key: POSTGRES_PASSWORD
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgres
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres-12.x.x-var-lib-postgresql-data
+          resources:
+            limits:
+              cpu: 125m
+              memory: 2Gi
+            requests:
+              cpu: 62m
+              memory: 1Gi
+          stdin: true
+      volumes:
+        - name: postgres
+          persistentVolumeClaim:
+            claimName: postgres

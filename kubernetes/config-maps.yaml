@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: zurek
+  name: backend
+data:
+  POSTGRES_DB: backend
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: zurek
+  name: minio
+data:
+  MINIO_ACCESS_KEY: minio
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-path-config
+  namespace: local-path-storage
+data:
+  config.json: |-
+    {
+      "nodePathMap": [
+        {
+          "node":"DEFAULT_PATH_FOR_NON_LISTED_NODES",
+          "paths":["/private/local-path-provisioner"]
+          }
+        ]
+    }

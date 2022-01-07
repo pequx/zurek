@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: backend
+  name: redis
+secrets:
+  - name: redis
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: backend
+  name: minio
+secrets:
+  - name: minio
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: backend
+  name: postgres
+secrets:
+  - name: postgres

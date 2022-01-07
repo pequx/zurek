@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: zurek
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      imagePullSecrets:
+        - name: registry
+      containers:
+        - name: backend
+          image: registry.gitlab.com/svtslv/public/dev-nestjs
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: redis
+          resources:
+            limits:
+              cpu: 125m
+              memory: 2Gi
+            requests:
+              cpu: 62m
+              memory: 1Gi
+          stdin: true
