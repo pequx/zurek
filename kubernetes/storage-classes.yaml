@@ -6,11 +6,3 @@ metadata:
 provisioner: k8s.io/minikube-hostpath
 parameters:
   type: pd-ssd
----
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: local-path
-provisioner: rancher.io/local-path
-volumeBindingMode: WaitForFirstConsumer
-reclaimPolicy: Delete

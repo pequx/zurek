@@ -7,18 +7,6 @@ namespaces:
 namespaces-clean:
 	$(KUBI) delete -f ./kubernetes/namespaces.yaml
 
-secrets:
-	$(KUBI) apply -f ./kubernetes/secrets.yaml
-
-secrets-clean:
-	$(KUBI) delete -f ./kubernetes/secrets.yaml
-
-secrets:
-	$(KUBI) apply -f ./kubernetes/secrets.yaml
-
-secrets-clean:
-	$(KUBI) delete -f ./kubernetes/secrets.yaml
-
 service-accounts:
 	$(KUBI) apply -f ./kubernetes/service-accounts.yaml
 
@@ -36,18 +24,6 @@ cluster-roles:
 
 cluster-roles-clean:
 	$(KUBI) delete -f ./kubernetes/cluster-roles.yaml
-
-cluster-role-bindings:
-	$(KUBI) apply -f ./kubernetes/cluster-role-bindings.yaml
-
-cluster-roles-bindings-clean:
-	$(KUBI) delete -f ./kubernetes/cluster-role-bindings.yaml
-
-cluster-role-bindings:
-	$(KUBI) apply -f ./kubernetes/cluster-role-bindings.yaml
-
-cluster-roles-bindings-clean:
-	$(KUBI) delete -f ./kubernetes/cluster-role-bindings.yaml
 
 storage-classes:
 	$(KUBI) apply -f ./kubernetes/storage-classes.yaml
@@ -67,30 +43,26 @@ volumes:
 volumes-clean:
 	$(KUBI) delete -f ./kubernetes/volumes.yaml
 
-kubi-config:
+setup:
 	make namespaces
-	make secrets
-	make service-accounts
 	make configs
-	make cluster-roles
-	make cluster-role-bindings
 	make storage-classes
-	make ingresses
 	make volumes
 
-kubi-config-clean:
+setup-clean:
 	make namespaces-clean
-	make secrets-clean
-	make service-accounts-clean
 	make configs-clean
-	make cluster-roles-clean
-	make cluster-role-bindings-clean
 	make storage-classes-clean
-	make ingresses-clean
 	make volumes-clean
 
-kubi-local:
+local:
 	$(SKAFFOLD) dev --port-forward
 
-kubi-remote:
+remote:
 	$(SKAFFOLD) dev --port-forward
+
+local-path-provisioner:
+	$(KUBI) apply -f ./kubernetes/local-path-provisioner.yaml
+
+local-path-provisioner-clean:
+	$(KUBI) delete -f ./kubernetes/local-path-provisioner.yaml

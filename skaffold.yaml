@@ -1,0 +1,24 @@
+apiVersion: skaffold/v2beta9
+kind: Config
+metadata:
+  name: zurek
+build:
+  # local:
+  #   push: false
+  artifacts:
+    - image: backend
+      context: backend
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  # kubeContext: docker-desktop
+  kubectl:
+    flags:
+      global: [--namespace=zurek]
+    manifests:
+      - ./kubernetes/secrets.yaml
+      - ./kubernetes/service-accounts.yaml
+      - ./kubernetes/deployment-postgres.yaml
+      - ./kubernetes/deployment-redis.yaml
+      - ./kubernetes/deployment-minio.yaml
+      - ./kubernetes/deployment-backend.yaml
