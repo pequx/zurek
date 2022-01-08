@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: nestjs-kubernetes-namespace
-  name: minio-deployment
+  namespace: zurek
+  name: minio
 spec:
   selector:
     matchLabels:
@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
         - name: minio
-          image: minio/minio:RELEASE.2019-10-12T01-39-57Z
+          image: minio/minio:RELEASE.2022-01-08T03-11-54Z
           volumeMounts:
-            - name: nestjs-kubernetes-volume
+            - name: minio
               mountPath: /data
               subPath: minio-x.x.x-data
           args:
@@ -40,10 +40,10 @@ spec:
           resources:
             limits:
               cpu: 125m
-              memory: 2Gi
-            requests:
-              cpu: 62m
               memory: 1Gi
+            requests:
+              cpu: 62m 
+              memory: 512Mi
           stdin: true
       volumes:
         - name: minio

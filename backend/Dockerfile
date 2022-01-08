@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:experimental
 
-FROM node:17.3.0-buster-slim as builder
+FROM node:17.3.0-buster as builder
 ENV NODE_ENV=builder
 USER root
 RUN apt-get -qqy update && \
@@ -23,10 +23,8 @@ RUN apt-get -qqy install mc && \
     apt-get -qqy install zsh && \
     apt-get -qqy install python && \
     rm -rf /var/lib/apt/lists/*
-
-USER app
 WORKDIR /app
-RUN npm ci && \
-    npm install
-COPY --from=bulder /app .
+COPY . .
+RUN npm ci
+USER app
 ENTRYPOINT ["npm", "run", "start:dev"]

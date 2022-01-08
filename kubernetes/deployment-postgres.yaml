@@ -27,7 +27,7 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: nestjs-kubernetes-secret
+                  name: postgres
                   key: POSTGRES_PASSWORD
           ports:
             - containerPort: 5432
@@ -38,10 +38,10 @@ spec:
           resources:
             limits:
               cpu: 125m
-              memory: 2Gi
+              memory: 1Gi
             requests:
               cpu: 62m
-              memory: 1Gi
+              memory: 512Mi
           stdin: true
       volumes:
         - name: postgres

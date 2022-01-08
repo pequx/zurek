@@ -17,7 +17,7 @@ spec:
         - name: registry
       containers:
         - name: backend
-          image: registry.gitlab.com/pequx/public/zurek
+          image: backend
           ports:
             - containerPort: 3000
           envFrom:
@@ -26,8 +26,8 @@ spec:
           resources:
             limits:
               cpu: 125m
-              memory: 2Gi
+              memory: 1Gi
             requests:
               cpu: 62m
-              memory: 1Gi
+              memory: 512Mi
           stdin: true
