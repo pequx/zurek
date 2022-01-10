@@ -1,14 +1,17 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   namespace: zurek
   name: redis
 spec:
+  serviceName: redis
+  podManagementPolicy: Parallel
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: redis
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -19,19 +22,22 @@ spec:
         image: redis:5-alpine
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 6379
+          - containerPort: 6379
         args: ["--requirepass", "$(REDIS_PASSWORD)"]
         env:
-        - name: REDIS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: redis
-              key: REDIS_PASSWORD
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: redis
+                key: REDIS_PASSWORD
         resources:
           limits:
-            cpu: 125m
+            cpu: 500m
             memory: 1Gi
           requests:
-            cpu: 62m
+            cpu: 250m
             memory: 512Mi
         stdin: true
+      serviceAccountName: redis
+      securityContext:
+        runAsUser: 999

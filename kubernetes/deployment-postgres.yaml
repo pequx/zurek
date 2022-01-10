@@ -1,14 +1,17 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   namespace: zurek
   name: postgres
 spec:
+  serviceName: postgres
+  podManagementPolicy: Parallel
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: postgres
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -16,14 +19,19 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:12-alpine
+          image: postgres:14-bullseye
           imagePullPolicy: IfNotPresent
           env:
             - name: POSTGRES_DB
               valueFrom:
-                configMapKeyRef:
-                  name: backend
+                secretKeyRef:
+                  name: postgres
                   key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -34,15 +42,32 @@ spec:
           volumeMounts:
             - name: postgres
               mountPath: /var/lib/postgresql/data
-              subPath: postgres-12.x.x-var-lib-postgresql-data
+              subPath: postgres-14.x.x-var-lib-postgresql-data
           resources:
             limits:
-              cpu: 125m
-              memory: 1Gi
+              cpu: 1000m
+              memory: 2Gi
             requests:
-              cpu: 62m
-              memory: 512Mi
+              cpu: 500m
+              memory: 1Gi
+          # readinessProbe:
+          #   exec:
+          #     command:
+          #     - /bin/sh
+          #     - -c
+          #     - -e
+          #     - |
+          #       exec pg_isready
+          #   initialDelaySeconds: 60
+          #   periodSeconds: 15
+          #   successThreshold: 1
+          #   timeoutSeconds: 15
+          #   failureThreshold: 5
           stdin: true
+      serviceAccountName: postgres
+      # securityContext:
+      #   runAsUser: 999
+      #   runAsGroup: 999
       volumes:
         - name: postgres
           persistentVolumeClaim:

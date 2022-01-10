@@ -10,15 +10,43 @@ build:
       context: backend
       docker:
         dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: src/**/*.ts
+            dest: ./
+          - src: test/**/*.ts
+            dest: ./
+          - src: test/**/*.json
+            dest: ./
+          - src: tsconfig.json
+            dest: ./tsconfig.json
+          - src: tsconfig.build.json
+            dest: ./tsconfig.build.json
+          - src: ormconfig.json
+            dest: ./ormconfig.json
+          - src: nest-cli.json
+            dest: ./nest-cli.json
+          - src: README.md
+            dest: ./README.md
+          - src: .eslintrc.js
+            dest: ./.eslintrc.js
+          - src: .prettierrc
+            dest: ./.prettierrc
 deploy:
   # kubeContext: docker-desktop
   kubectl:
     flags:
       global: [--namespace=zurek]
     manifests:
+      - ./kubernetes/namespaces.yaml
+      - ./kubernetes/config-maps.yaml
       - ./kubernetes/secrets.yaml
       - ./kubernetes/service-accounts.yaml
+      - ./kubernetes/services.yaml
+      - ./kubernetes/storage-classes.yaml
+      - ./kubernetes/volumes.yaml
       - ./kubernetes/deployment-postgres.yaml
+      - ./kubernetes/deployment-pgadmin.yaml
       - ./kubernetes/deployment-redis.yaml
       - ./kubernetes/deployment-minio.yaml
       - ./kubernetes/deployment-backend.yaml

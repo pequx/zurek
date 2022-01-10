@@ -1,10 +1,14 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   namespace: zurek
   name: backend
 spec:
+  serviceName: backend
+  podManagementPolicy: Parallel
   replicas: 1
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: backend
@@ -20,14 +24,79 @@ spec:
           image: backend
           ports:
             - containerPort: 3000
-          envFrom:
-            - secretRef:
-                name: redis
+          # volumeMounts:
+          #   - mountPath: /app
+          #     name: backend
+          env:
+            - name: DB_TYPE
+              value: postgres
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres
+                  key: POSTGRES_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres
+                  key: POSTGRES_PORT
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: POSTGRES_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: POSTGRES_PASSWORD
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: POSTGRES_DB
+            - name: DB_ENTITIES
+              valueFrom:
+                configMapKeyRef:
+                  name: backend
+                  key: DB_ENTITIES
+            - name: DB_SYNCHRONIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: backend
+                  key: DB_SYNCHRONIZE               
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: redis
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: redis
+                  key: REDIS_PORT                              
+            - name: REDIS_TTL
+              valueFrom:
+                configMapKeyRef:
+                  name: redis
+                  key: REDIS_TTL
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: REDIS_PASSWORD                
           resources:
             limits:
-              cpu: 125m
-              memory: 1Gi
+              cpu: 2000m
+              memory: 3Gi
             requests:
-              cpu: 62m
-              memory: 512Mi
+              cpu: 1000m
+              memory: 2Gi
           stdin: true
+      serviceAccountName: backend
+      securityContext:
+        runAsUser: 1000
+      # volumes:
+      #   - name: backend
+      #     persistentVolumeClaim:
+      #       claimName: backend          

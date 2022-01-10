@@ -1,0 +1,9 @@
+type: postgres
+tables:
+  - name: taxes
+    fields:
+      - name: id
+        type: incremental
+      - name: name
+        type: string
+        

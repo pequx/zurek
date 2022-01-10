@@ -1,14 +1,17 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   namespace: zurek
   name: minio
 spec:
+  serviceName: minio
+  podManagementPolicy: Parallel
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: minio
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -39,12 +42,13 @@ spec:
             - containerPort: 9000
           resources:
             limits:
-              cpu: 125m
+              cpu: 500m
               memory: 1Gi
             requests:
-              cpu: 62m 
+              cpu: 250m
               memory: 512Mi
           stdin: true
+      serviceAccountName: minio
       volumes:
         - name: minio
           persistentVolumeClaim:

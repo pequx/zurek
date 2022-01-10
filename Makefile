@@ -45,13 +45,11 @@ volumes-clean:
 
 setup:
 	make namespaces
-	make configs
 	make storage-classes
 	make volumes
-
+	
 setup-clean:
 	make namespaces-clean
-	make configs-clean
 	make storage-classes-clean
 	make volumes-clean
 

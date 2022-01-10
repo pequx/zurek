@@ -1,50 +1,59 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: backend
+  namespace: zurek
   name: postgres
 spec:
-  clusterIP: None
   selector:
-    app: postgres
+    app: postgres 
+  type: NodePort
   ports:
     - port: 5432
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: backend
+  namespace: zurek
+  name: pgadmin
+spec:
+  selector:
+    app: pgadmin 
+  ports:
+    - port: 5050
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: zurek
   name: redis
 spec:
   selector:
-    app: redis
+    app: redis 
   ports:
     - port: 6379
-  clusterIP: None
+  type: NodePort
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: backend
+  namespace: zurek
   name: minio
 spec:
-  type: LoadBalancer
   selector:
-    app: minio
+    app: minio 
+  type: NodePort
   ports:
     - port: 9000
-      targetPort: 9000
-      protocol: TCP
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: backend
+  namespace: zurek
   name: backend
 spec:
-  type: LoadBalancer
+  selector:
+    app: backend 
+  type: NodePort
   ports:
     - port: 3000
-      targetPort: 3000
-  selector:
-    app: backend
