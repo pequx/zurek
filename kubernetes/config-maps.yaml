@@ -65,3 +65,19 @@ data:
           }
         }
       }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: zurek
+  name: pgadmin
+  labels:
+    app: pgadmin
+data:
+  set_password.sh: |
+    #!/bin/bash
+
+    createPassword() 
+    {
+      
+    }

@@ -1,16 +1,19 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Name } from '../../name.interface'
 
 @Entity()
 export class Tax {
     @PrimaryGeneratedColumn()
-    id: number
+    public id: number
+
+    @Column({
+        type: 'jsonb'
+    })
+    public name: Name
 
     @Column()
-    name: string
+    public value: number
 
     @Column()
-    value: number
-
-    @Column()
-    isActive: boolean
+    public isActive: boolean
 }

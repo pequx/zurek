@@ -53,11 +53,15 @@ setup-clean:
 	make storage-classes-clean
 	make volumes-clean
 
-local:
+dev:
 	$(SKAFFOLD) dev --port-forward
 
 remote:
 	$(SKAFFOLD) dev --port-forward
+
+minikube:
+	echo "https://github.com/GoogleContainerTools/skaffold/issues/4246"
+	minikube start --memory 7168 --cpus 5 --namespace=zurek
 
 local-path-provisioner:
 	$(KUBI) apply -f ./kubernetes/local-path-provisioner.yaml

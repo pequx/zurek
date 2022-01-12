@@ -1,8 +1,8 @@
 import { CacheInterceptor, Controller, Get, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
 
-@Controller()
-@UseInterceptors(CacheInterceptor)
+@Controller({ version: '1', path: '/' })
+// @UseInterceptors(CacheInterceptor)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 

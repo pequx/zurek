@@ -27,6 +27,13 @@ spec:
           # volumeMounts:
           #   - mountPath: /app
           #     name: backend
+          # lifecycle:
+          #   postStart:
+          #     exec:
+          #       command:
+          #         - /bin/bash
+          #         - -c
+          #         - ./env.sh
           env:
             - name: DB_TYPE
               value: postgres
@@ -84,18 +91,24 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: redis
-                  key: REDIS_PASSWORD                
+                  key: REDIS_PASSWORD
+            - name: NODE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backend
+                  key: NODE_PASSWORD            
           resources:
             limits:
-              cpu: 2000m
-              memory: 3Gi
+              cpu: 2500m
+              memory: 4Gi
             requests:
-              cpu: 1000m
+              cpu: 2000m
               memory: 2Gi
           stdin: true
       serviceAccountName: backend
       securityContext:
-        runAsUser: 1000
+        runAsUser: 0
+      hostname: backend.zurek
       # volumes:
       #   - name: backend
       #     persistentVolumeClaim:

@@ -7,6 +7,7 @@ import { TaxesModule } from './taxes/taxes.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { DocumentsModule } from './documents/documents.module';
 
 @Module({
   imports: [
@@ -15,9 +16,9 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     }),
     CacheModule.registerAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
+      inject: [ConfigService], 
       useFactory: async (configService: ConfigService) => ({
-        store: redisStore, 
+        store: redisStore,
         host: configService.get('REDIS_HOST'),
         port: configService.get<number>('REDIS_PORT'),
         ttl: configService.get<number>('REDIS_TTL'), 
@@ -29,7 +30,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
       inject: [ConfigService],  
       useFactory: async (configService: ConfigService) =>
         Object.assign(await getConnectionOptions(), {
-          autoLoadEntities: true, 
+          autoLoadEntities: true,  
           type: configService.get('DB_TYPE'),
           host: configService.get('DB_HOST'),
           port: configService.get<number>('DB_PORT'),
@@ -38,7 +39,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
           database: configService.get('DB_NAME')
         })
     }),
-    TaxesModule
+    TaxesModule,
+    DocumentsModule
   ],
   controllers: [AppController],
   providers: [
