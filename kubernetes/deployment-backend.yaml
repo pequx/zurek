@@ -96,7 +96,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: backend
-                  key: NODE_PASSWORD            
+                  key: NODE_PASSWORD      
+            - name: NEST_DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: backend
+                  key: NEST_DEBUG
           resources:
             limits:
               cpu: 2500m

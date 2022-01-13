@@ -7,7 +7,7 @@ export class Tax {
     public id: number
 
     @Column({
-        type: 'jsonb'
+        type: 'jsonb',
     })
     public name: Name
 

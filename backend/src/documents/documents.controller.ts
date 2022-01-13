@@ -3,32 +3,33 @@ import { DocumentsService } from './documents.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 
+@Controller({ version: '1', path: 'documents' })
 @Controller('documents')
 export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
 
   @Post()
-  create(@Body() createDocumentDto: CreateDocumentDto) {
-    return this.documentsService.create(createDocumentDto);
+  public async create(@Body() dto: CreateDocumentDto) {
+    return this.documentsService.create(dto);
   }
 
   @Get()
-  findAll() {
+  public async findAll() {
     return this.documentsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  public async findOne(@Param('id') id: string) {
     return this.documentsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDocumentDto: UpdateDocumentDto) {
-    return this.documentsService.update(+id, updateDocumentDto);
+  public async update(@Param('id') id: string, @Body() dto: UpdateDocumentDto) {
+    return this.documentsService.update(+id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  public async remove(@Param('id') id: string) {
     return this.documentsService.remove(+id);
   }
 }

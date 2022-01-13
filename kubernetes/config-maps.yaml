@@ -30,6 +30,7 @@ metadata:
 data:
   DB_ENTITIES: dist/**/*.entity{.ts,.js}
   DB_SYNCHRONIZE: "false"
+  NEST_DEBUG: "True"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -47,7 +48,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: zurek
-  name: pgadmin
+  name: pgadmin-servers
   labels:
     app: pgadmin
 data:
@@ -74,10 +75,21 @@ metadata:
   labels:
     app: pgadmin
 data:
-  set_password.sh: |
-    #!/bin/bash
+  PGADMIN_DEFAULT_EMAIL: admin@zurek.local
+  PGADMIN_LISTEN_PORT: "5050"
+---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   namespace: zurek
+#   name: pgadmin
+#   labels:
+#     app: pgadmin
+# data:
+#   set_password.sh: |
+#     #!/bin/bash
 
-    createPassword() 
-    {
+#     createPassword() 
+#     {
       
-    }
+#     }

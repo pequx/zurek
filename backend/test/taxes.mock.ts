@@ -1,4 +1,5 @@
 import { CreateTaxDto } from "src/taxes/dto/create-tax.dto";
+import { UpdateTaxDto } from "src/taxes/dto/update-tax.dto";
 
 export const ids = ['0', '1']
 
@@ -22,11 +23,11 @@ export const tax2: CreateTaxDto = {
   isActive: true
 };
 
-export const updatedTax1: CreateTaxDto = {
+export const updatedTax1: UpdateTaxDto = {
   name: {
-    en: "Test tax english after change name #3",
-    pl: "Testowy podatek po polsku #3",
-    de: "Deutsche test Steuername #3"
+    en: "Update: Test tax english after change name #1",
+    pl: "Update: Testowy podatek po polsku #1",
+    de: "Update: Deutsche test Steuername #1"
   },
   value: 0,
   isActive: true

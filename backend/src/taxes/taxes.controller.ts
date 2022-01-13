@@ -6,37 +6,35 @@ import { Tax } from './entities/tax.entity';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { resolve } from 'path/posix';
 import { rejects } from 'assert';
+import { messages } from 'src/messages';
+import { Message } from 'src/message.interface';
 
 @Controller({ version: '1', path: 'taxes' })
 export class TaxesControllerV1 {
   constructor(private readonly taxesService: TaxesService) {}
 
   @Post()
-  async create(@Body() dto: CreateTaxDto): Promise<Tax> {
-    return this.taxesService.create(dto);
+  public create(@Body() dto: CreateTaxDto) {
+    return this.taxesService.create(dto)
   }
 
   @Get()
-  async findAll(): Promise<Tax[]> {
+  public async findAll() {
     return this.taxesService.findAll();
   } 
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Tax> {
-    const result:Tax = await this.taxesService.findOne(+id)
-    return new Promise((resolve, reject) => {
-      if (result) resolve(result)
-      reject({ message: "eee" })
-    })
+  public async findOne(@Param('id') id: string) {
+    return this.taxesService.findOne(+id)
   }
 
   @Patch(':id') 
-  async update(@Param('id') id: string, @Body() dto: UpdateTaxDto): Promise<UpdateResult>{
+  public async update(@Param('id') id: string, @Body() dto: UpdateTaxDto) {
     return this.taxesService.update(+id, dto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<DeleteResult> {
+  public async remove(@Param('id') id: string) {
     return this.taxesService.remove(+id);
   }
 }

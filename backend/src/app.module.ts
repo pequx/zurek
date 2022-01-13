@@ -2,12 +2,13 @@ import { CacheInterceptor, CacheModule, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { getConnectionOptions } from 'typeorm';
+import { createConnection, getConnectionOptions } from 'typeorm';
 import { TaxesModule } from './taxes/taxes.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { DocumentsModule } from './documents/documents.module';
+import { HelperModule } from '@app/helper';
 
 @Module({
   imports: [
@@ -31,14 +32,20 @@ import { DocumentsModule } from './documents/documents.module';
       useFactory: async (configService: ConfigService) =>
         Object.assign(await getConnectionOptions(), {
           autoLoadEntities: true,  
+          synchronize: true,
           type: configService.get('DB_TYPE'),
           host: configService.get('DB_HOST'),
           port: configService.get<number>('DB_PORT'),
           username: configService.get('DB_USERNAME'),
           password: configService.get('DB_PASSWORD'),
           database: configService.get('DB_NAME')
-        })
+        }),
+        connectionFactory: async (options) => {
+          const connection = await createConnection(options);
+          return connection;
+        },
     }),
+    HelperModule,
     TaxesModule,
     DocumentsModule
   ],

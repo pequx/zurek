@@ -19,6 +19,10 @@ build:
             dest: .
           - src: test/**/*.json
             dest: .
+          - src: libs/**/*.ts
+            dest: .
+          - src: libs/**/*.json
+            dest: .
           - src: tsconfig.json
             dest: ./tsconfig.json
           - src: tsconfig.build.json

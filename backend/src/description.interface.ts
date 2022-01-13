@@ -1,4 +1,4 @@
-export interface Name {
+export interface Description {
     en: string
     pl: string
     de: string

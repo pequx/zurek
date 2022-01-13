@@ -16,6 +16,20 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/helper": [
+        "libs/helper/src"
+      ],
+      "@app/helper/*": [
+        "libs/helper/src/*"
+      ],
+      "@app/message": [
+        "libs/message/src"
+      ],
+      "@app/message/*": [
+        "libs/message/src/*"
+      ]
+    }
   }
 }
