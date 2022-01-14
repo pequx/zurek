@@ -4,3 +4,8 @@ metadata:
   labels:
     app: zurek
   name: zurek
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx-ingress

@@ -1,0 +1,22 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: cafe
+spec:
+  host: locahost
+  tls:
+    secret: default-server-secret
+  upstreams:
+    - name: frontend
+      service: frontend
+      port: 80
+    - name: backend
+      service: backend
+      port: 80
+  routes:
+    - path: /
+      action:
+        pass: tea
+    - path: /v1
+      action:
+        pass: coffee

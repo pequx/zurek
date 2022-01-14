@@ -44,28 +44,28 @@ data:
   REDIS_PORT: "6379"
   REDIS_TTL: "5"
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  namespace: zurek
-  name: pgadmin-servers
-  labels:
-    app: pgadmin
-data:
-  servers.json: |
-     {
-       "Servers": {
-         "1": {
-           "Name": "PostgreSQL DB",
-           "Group": "Servers",
-           "Port": 5432,
-           "Username": "zurek",
-           "Host": "postgres.zurek",
-           "SSLMode": "prefer",
-           "MaintenanceDB": "postgres"
-          }
-        }
-      }
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   namespace: zurek
+#   name: pgadmin-servers
+#   labels:
+#     app: pgadmin
+# data:
+#   servers.json: |
+#     {
+#       "Servers": {
+#         "1": {
+#           "Name": "PostgreSQL DB",
+#           "Group": "Servers",
+#           "Port": 5432,
+#           "Username": "zurek",
+#           "Host": "postgres.zurek",
+#           "SSLMode": "prefer",
+#           "MaintenanceDB": "postgres"
+#          }
+#        }
+#      }
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -78,18 +78,12 @@ data:
   PGADMIN_DEFAULT_EMAIL: admin@zurek.local
   PGADMIN_LISTEN_PORT: "5050"
 ---
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   namespace: zurek
-#   name: pgadmin
-#   labels:
-#     app: pgadmin
-# data:
-#   set_password.sh: |
-#     #!/bin/bash
-
-#     createPassword() 
-#     {
-      
-#     }
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-config
+  namespace: zurek
+data:
+  proxy-protocol: "True"
+  real-ip-header: "proxy_protocol"
+  set-real-ip-from: "0.0.0.0/0"

@@ -1,5 +1,5 @@
 export interface Description {
-    en: string
-    pl: string
-    de: string
+    pl?: string
+    en?: string
+    de?: string
 }

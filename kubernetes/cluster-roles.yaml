@@ -1,0 +1,128 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nginx-ingress
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - endpoints
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - create
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+      - list
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses
+    verbs:
+      - list
+      - watch
+      - get
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses/status
+    verbs:
+      - update
+  - apiGroups:
+      - k8s.nginx.org
+    resources:
+      - virtualservers
+      - virtualserverroutes
+      - globalconfigurations
+      - transportservers
+      - policies
+    verbs:
+      - list
+      - watch
+      - get
+  - apiGroups:
+      - k8s.nginx.org
+    resources:
+      - virtualservers/status
+      - virtualserverroutes/status
+      - policies/status
+      - transportservers/status
+    verbs:
+      - update
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingressclasses
+    verbs:
+      - get
+  - apiGroups:
+      - cis.f5.com
+    resources:
+      - ingresslinks
+    verbs:
+      - list
+      - watch
+      - get
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nginx-ingress-app-protect
+rules:
+  - apiGroups:
+      - appprotect.f5.com
+    resources:
+      - appolicies
+      - aplogconfs
+      - apusersigs
+    verbs:
+      - "get"
+      - "watch"
+      - "list"
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nginx-ingress-app-protect-dos
+rules:
+  - apiGroups:
+      - appprotectdos.f5.com
+    resources:
+      - apdospolicies
+      - apdoslogconfs
+      - dosprotectedresources
+    verbs:
+      - "get"
+      - "watch"
+      - "list"

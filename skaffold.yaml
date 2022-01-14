@@ -37,6 +37,34 @@ build:
             dest: ./.eslintrc.js
           - src: .prettierrc
             dest: ./.prettierrc
+    - image: frontend
+      context: frontend
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: src/**/*.ts
+            dest: .
+          - src: test/**/*.ts
+            dest: .
+          - src: test/**/*.json
+            dest: .
+          - src: libs/**/*.ts
+            dest: .
+          - src: public/**/*.*
+            dest: .
+          - src: libs/**/*.json
+            dest: .
+          - src: tsconfig.json
+            dest: ./tsconfig.json
+          - src: tsconfig.build.json
+            dest: ./tsconfig.build.json
+          - src: README.md
+            dest: ./README.md
+          - src: .eslintrc.js
+            dest: ./.eslintrc.js
+          - src: .prettierrc
+            dest: ./.prettierrc
 deploy:
   kubectl:
     defaultNamespace: zurek
@@ -50,11 +78,18 @@ deploy:
       - ./kubernetes/services.yaml
       - ./kubernetes/storage-classes.yaml
       - ./kubernetes/volumes.yaml
+      - ./kubernetes/ingress-classes.yaml
+      - ./kubernetes/cluster-roles.yaml
+      - ./kubernetes/cluster-role-bindings.yaml
+      - ./kubernetes/custom-resources.yaml
+      - ./kubernetes/deployment-frontend.yaml
       - ./kubernetes/deployment-postgres.yaml
-      - ./kubernetes/deployment-pgadmin.yaml
+      # - ./kubernetes/deployment-pgadmin.yaml
       - ./kubernetes/deployment-redis.yaml
       - ./kubernetes/deployment-minio.yaml
       - ./kubernetes/deployment-backend.yaml
+      - ./kubernetes/deployment-nginx.yaml
+      - ./kubernetes/ingresses.yaml
 profiles:
   - name: development
     activation:

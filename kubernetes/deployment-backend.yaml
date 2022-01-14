@@ -71,7 +71,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: backend
-                  key: DB_SYNCHRONIZE               
+                  key: DB_SYNCHRONIZE
             - name: REDIS_HOST
               valueFrom:
                 configMapKeyRef:
@@ -81,7 +81,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: redis
-                  key: REDIS_PORT                              
+                  key: REDIS_PORT
             - name: REDIS_TTL
               valueFrom:
                 configMapKeyRef:
@@ -96,7 +96,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: backend
-                  key: NODE_PASSWORD      
+                  key: NODE_PASSWORD
             - name: NEST_DEBUG
               valueFrom:
                 configMapKeyRef:
@@ -104,17 +104,16 @@ spec:
                   key: NEST_DEBUG
           resources:
             limits:
-              cpu: 2500m
+              cpu: 2000m
               memory: 4Gi
             requests:
-              cpu: 2000m
+              cpu: 1500m
               memory: 2Gi
           stdin: true
       serviceAccountName: backend
       securityContext:
         runAsUser: 0
-      hostname: backend.zurek
       # volumes:
       #   - name: backend
       #     persistentVolumeClaim:
-      #       claimName: backend          
+      #       claimName: backend

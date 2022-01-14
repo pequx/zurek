@@ -5,14 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Document } from './entities/document.entity';
 import { HelperService } from '@app/helper';
 import { MessageService } from '@app/message';
-import { Tax } from 'src/taxes/entities/tax.entity';
+import { DocumentsSubscriber } from './documents.subscriber';
 
 @Module({
-  imports: [
-    // TypeOrmModule.forFeature([Tax]),
-    TypeOrmModule.forFeature([Document])
-  ],
+  imports: [TypeOrmModule.forFeature([Document])],
   controllers: [DocumentsController],
-  providers: [Logger, DocumentsService, MessageService, HelperService]
+  providers: [Logger, MessageService, HelperService, DocumentsService, DocumentsSubscriber]
 })
-export class DocumentsModule {}
+export class DocumentsModule { }

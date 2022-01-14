@@ -10,27 +10,27 @@ import { Document } from './entities/document.entity';
 @Injectable()
 export class DocumentsService {
   constructor(
-    @InjectRepository(Document) private documentsRepository: Repository<Document>, 
+    @InjectRepository(Document) private documentsRepository: Repository<Document>,
     @Inject(HelperService) private helperService: HelperService
-  ) {}
+  ) { }
 
-  public async create(dto: CreateDocumentDto):Promise<Document|Message> {
-    return this.helperService.getCreatePromise(this.documentsRepository, dto)
+  public async create(dto: CreateDocumentDto): Promise<Document | Message> {
+    return this.helperService.getCreatePromise(this.documentsRepository, dto, { relations: ['tags'] })
   }
 
-  public async findAll():Promise<Document[]|Message> {
-    return this.helperService.getFindAllPromise(this.documentsRepository)
+  public async findAll(): Promise<Document[] | Message> {
+    return this.helperService.getFindAllPromise(this.documentsRepository, { relations: ['tags'] })
   }
 
-  public async findOne(id: number) {
+  public async findOne(id: number): Promise<Document | Message> {
     return this.helperService.getFindOnePromise(this.documentsRepository, id)
   }
 
-  public async update(id: number, dto: UpdateDocumentDto) {
+  public async update(id: number, dto: UpdateDocumentDto): Promise<Document | Message> {
     return this.helperService.getUpdatePromise(this.documentsRepository, id, dto)
   }
 
-  public async remove(id: number) {
+  public async remove(id: number): Promise<Document | Message> {
     return this.helperService.getRemovePromise(this.documentsRepository, id)
   }
 }
