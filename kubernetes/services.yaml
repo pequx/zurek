@@ -72,27 +72,29 @@ spec:
     app: frontend
   type: NodePort
   ports:
-    - port: 8080
-      targetPort: 3000
+    - name: node
+      port: 8080
+    - name: storybook
+      port: 6006
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-ingress
-  namespace: zurek
-spec:
-  type: NodePort
-  ports:
-    - port: 80
-      targetPort: 8080
-      protocol: TCP
-      name: http
-    - port: 443
-      targetPort: 443
-      protocol: TCP
-      name: https
-  selector:
-    app: nginx-ingress
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: nginx-ingress
+#   namespace: zurek
+# spec:
+#   type: NodePort
+#   ports:
+#     - port: 80
+#       targetPort: 8080
+#       protocol: TCP
+#       name: http
+#     - port: 443
+#       targetPort: 443
+#       protocol: TCP
+#       name: https
+#   selector:
+#     app: nginx-ingress
 ---
 # apiVersion: v1
 # kind: Service

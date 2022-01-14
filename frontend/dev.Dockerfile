@@ -6,23 +6,21 @@ USER root
 RUN apt-get -qqy update
 RUN apt-get -qqy install apt-utils make build-essential mc zsh sudo curl
 RUN apt-get -qqy install python git
-# RUN rm -rf /var/lib/apt/lists/*
 RUN install -d -o node -g node /app
 RUN chown node /app
 
 FROM base as builder
 USER root
-RUN npm install -g @nestjs/cli
 WORKDIR /app
 COPY --chown=node package*.json ./
 USER node
 RUN npm install
-
-FROM builder as backend
-ENV GOTRACEBACK=single
-USER root
-EXPOSE 3000
-WORKDIR /app
 COPY --chown=node . .
+
+FROM builder as frontend
+ENV GOTRACEBACK=single
+EXPOSE 8080
 USER node
-ENTRYPOINT ["npm", "run", "start:prod"]
+RUN npx -p @storybook/cli sb init
+# RUN npm run build-storybook
+ENTRYPOINT ["npm", "run", "dev"]

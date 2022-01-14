@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   namespace: zurek
-  name: backend
+  name: backend-dev
 spec:
   serviceName: backend
   podManagementPolicy: Parallel
@@ -24,19 +24,12 @@ spec:
           image: backend
           ports:
             - containerPort: 3000
-          # volumeMounts:
-          #   - mountPath: /app
-          #     name: backend
-          # lifecycle:
-          #   postStart:
-          #     exec:
-          #       command:
-          #         - /bin/bash
-          #         - -c
-          #         - ./env.sh
+          volumeMounts:
+            - mountPath: /home/node
+              name: backend
           env:
             - name: NODE_ENV
-              value: production
+              value: development
             - name: DB_TYPE
               value: postgres
             - name: DB_HOST
@@ -115,7 +108,7 @@ spec:
       serviceAccountName: backend
       securityContext:
         runAsUser: 0
-      # volumes:
-      #   - name: backend
-      #     persistentVolumeClaim:
-      #       claimName: backend
+      volumes:
+        - name: backend
+          persistentVolumeClaim:
+            claimName: backend

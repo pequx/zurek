@@ -43,25 +43,24 @@ volumes:
 volumes-clean:
 	$(KUBI) delete -f ./kubernetes/volumes.yaml
 
+storybook:
+	npx -p @storybook/cli sb init
+
+
+
 setup:
-	make namespaces
-	make storage-classes
-	make volumes
-	
-setup-clean:
-	make namespaces-clean
-	make storage-classes-clean
-	make volumes-clean
+	make storybook
 
 dev:
-	$(SKAFFOLD) dev --port-forward
+	$(SKAFFOLD) dev --profile development --port-forward
 
 remote:
-	$(SKAFFOLD) dev --port-forward
+	$(SKAFFOLD) --profile production
 
 minikube:
-	echo "https://github.com/GoogleContainerTools/skaffold/issues/4246"
-	minikube start --memory 7168 --cpus 5 --namespace=zurek
+	minikube start --memory 7168 --cpus 5
+
+
 
 local-path-provisioner:
 	$(KUBI) apply -f ./kubernetes/local-path-provisioner.yaml

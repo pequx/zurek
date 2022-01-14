@@ -9,22 +9,18 @@ RUN apt-get -qqy install python git
 RUN install -d -o node -g node /app
 RUN chown node /app
 
-FROM base as builder
-ENV NODE_ENV=builder
+FROM base as builder   
 USER root
 WORKDIR /app
 COPY --chown=node package*.json ./
 USER node
 RUN npm install
-
-FROM builder as frontend
-ENV NODE_ENV=development
-ENV GOTRACEBACK=single
-USER root
-RUN chsh --shell /bin/zsh
-RUN chsh --shell /bin/zsh node
-EXPOSE 8080
 WORKDIR /app
 COPY --chown=node . .
+
+FROM builder as frontend
+ENV GOTRACEBACK=single
+USER root
+EXPOSE 8080
 USER node
 ENTRYPOINT ["npm", "run", "start"]

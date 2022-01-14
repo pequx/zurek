@@ -13,58 +13,68 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: src/**/*.ts
+          - src: src/**/*.*
             dest: .
-          - src: test/**/*.ts
+          - src: test/**/*.*
             dest: .
-          - src: test/**/*.json
+          - src: libs/**/*.*
             dest: .
-          - src: libs/**/*.ts
+          - src: dist/**/*.*
             dest: .
-          - src: libs/**/*.json
+          - src: package.json
+            dest: .
+          - src: package-lock.json
             dest: .
           - src: tsconfig.json
-            dest: ./tsconfig.json
+            dest: .
           - src: tsconfig.build.json
-            dest: ./tsconfig.build.json
+            dest: .
           - src: ormconfig.json
-            dest: ./ormconfig.json
+            dest: .
           - src: nest-cli.json
-            dest: ./nest-cli.json
+            dest: .
           - src: README.md
-            dest: ./README.md
+            dest: .
           - src: .eslintrc.js
-            dest: ./.eslintrc.js
+            dest: .
           - src: .prettierrc
-            dest: ./.prettierrc
+            dest: .
     - image: frontend
       context: frontend
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: src/**/*.ts
+          - src: src/**/*.*
             dest: .
-          - src: test/**/*.ts
+          - src: test/**/*.*
             dest: .
-          - src: test/**/*.json
+          - src: libs/**/*.*
             dest: .
-          - src: libs/**/*.ts
+          - src: dist/**/*.*
             dest: .
           - src: public/**/*.*
             dest: .
-          - src: libs/**/*.json
+          - src: .storybook/**/*.*
+            dest: .
+          - src: package.json
+            dest: .
+          - src: package-lock.json
+            dest: .
+          - src: babel.config.json
+            dest: .
+          - src: dev.webpack.config.js
             dest: .
           - src: tsconfig.json
-            dest: ./tsconfig.json
+            dest: .
           - src: tsconfig.build.json
-            dest: ./tsconfig.build.json
+            dest: .
           - src: README.md
-            dest: ./README.md
+            dest: .
           - src: .eslintrc.js
-            dest: ./.eslintrc.js
+            dest: .
           - src: .prettierrc
-            dest: ./.prettierrc
+            dest: .
 deploy:
   kubectl:
     defaultNamespace: zurek
@@ -82,20 +92,26 @@ deploy:
       - ./kubernetes/cluster-roles.yaml
       - ./kubernetes/cluster-role-bindings.yaml
       - ./kubernetes/custom-resources.yaml
-      - ./kubernetes/deployment-frontend.yaml
       - ./kubernetes/deployment-postgres.yaml
-      # - ./kubernetes/deployment-pgadmin.yaml
       - ./kubernetes/deployment-redis.yaml
       - ./kubernetes/deployment-minio.yaml
       - ./kubernetes/deployment-backend.yaml
-      - ./kubernetes/deployment-nginx.yaml
-      - ./kubernetes/ingresses.yaml
+      - ./kubernetes/deployment-frontend.yaml
+      # - ./kubernetes/deployment-pgadmin.yaml
+      # - ./kubernetes/deployment-nginx.yaml
+      # - ./kubernetes/ingresses.yaml
 profiles:
   - name: development
-    activation:
-      - kubeContext: minikube
-    # patches:
-    #   - op: replace
-    #     path: /build/artifacts/0/docker/dockerfile
-    #     from: ENTRYPOINT ["npm", "run", "start:debug"]
-    #     value: ENTRYPOINT ["npm", "run", "start:dev"]
+    patches:
+      - op: replace
+        path: /build/artifacts/0/docker/dockerfile
+        value: dev.Dockerfile
+      - op: replace
+        path: /build/artifacts/1/docker/dockerfile
+        value: dev.Dockerfile
+      - op: replace
+        path: /deploy/kubectl/manifests/14
+        value: ./kubernetes/dev-deployment-backend.yaml
+      - op: replace
+        path: /deploy/kubectl/manifests/15
+        value: ./kubernetes/dev-deployment-frontend.yaml

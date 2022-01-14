@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
   namespace: zurek
-  name: frontend
+  name: frontend-dev
 spec:
   replicas: 1
   selector:
@@ -19,11 +19,16 @@ spec:
         - name: frontend
           image: frontend
           ports:
-            - containerPort: 3000
-          # volumeMounts:
-          #   - mountPath: /app
-          #     name: frontend
+            - name: node
+              containerPort: 8080
+            - name: storybook
+              containerPort: 6006
+          volumeMounts:
+            - mountPath: /home/node
+              name: frontend
           env:
+            - name: NODE_ENV
+              value: development
             - name: HTTPS
               valueFrom:
                 configMapKeyRef:
@@ -40,7 +45,7 @@ spec:
       serviceAccountName: frontend
       securityContext:
         runAsUser: 1000
-      # volumes:
-      #   - name: frontend
-      #     persistentVolumeClaim:
-      #       claimName: frontend
+      volumes:
+        - name: frontend
+          persistentVolumeClaim:
+            claimName: frontend

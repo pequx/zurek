@@ -6,7 +6,20 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path
+  storageClassName: fast
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: zurek
+  name: frontend
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: fast
   resources:
     requests:
       storage: 2Gi

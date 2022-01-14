@@ -12,7 +12,6 @@ RUN chown node /app
 
 FROM base as builder
 USER root
-RUN npm install -g @nestjs/cli
 WORKDIR /app
 COPY --chown=node package*.json ./
 USER node
@@ -21,8 +20,9 @@ RUN npm install
 FROM builder as backend
 ENV GOTRACEBACK=single
 USER root
+RUN npm install -g @nestjs/cli
 EXPOSE 3000
 WORKDIR /app
 COPY --chown=node . .
 USER node
-ENTRYPOINT ["npm", "run", "start:prod"]
+ENTRYPOINT ["npm", "run", "start:dev"]
