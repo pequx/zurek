@@ -7,6 +7,7 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/preset-create-react-app",
+    'storybook-addon-material-ui'
   ],
   "framework": "@storybook/react",
   "core": {
@@ -26,23 +27,22 @@ module.exports = {
       hot: true,
       compress: true
     },
-    optimization: {
-      ...optimization,
-      moduleIds: 'deterministic',
-      runtimeChunk: 'single',
-      splitChunks: {
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-          },
-        },
-      },
-    },
+    // optimization: {
+    //   ...config.optimization,
+    //   moduleIds: 'deterministic',
+    //   runtimeChunk: 'single',
+    //   splitChunks: {
+    //     cacheGroups: {
+    //       vendor: {
+    //         test: /[\\/]node_modules[\\/]/,
+    //         name: 'vendors',
+    //         chunks: 'all',
+    //       },
+    //     },
+    //   },
+    // },
     output: {
       ...config.output,
-
     }
   })
 }

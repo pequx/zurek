@@ -1,4 +1,5 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+
 const PORT = 8080;
 
 const config = {

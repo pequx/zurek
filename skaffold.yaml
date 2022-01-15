@@ -111,7 +111,7 @@ profiles:
         value: dev.Dockerfile
       - op: replace
         path: /deploy/kubectl/manifests/14
-        value: ./kubernetes/dev-deployment-backend.yaml
+        value: ./kubernetes/dev/deployment-backend.yaml
       - op: replace
         path: /deploy/kubectl/manifests/15
-        value: ./kubernetes/dev-deployment-frontend.yaml
+        value: ./kubernetes/dev/deployment-frontend.yaml

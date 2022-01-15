@@ -29,6 +29,8 @@ spec:
           env:
             - name: NODE_ENV
               value: development
+            - name: STORYBOOK_PORT
+              value: "6006"
             - name: HTTPS
               valueFrom:
                 configMapKeyRef:
